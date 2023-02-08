@@ -1,4 +1,4 @@
-from decimal import Decimal, getcontext
+from decimal import Decimal
 
 
 def MyRound(val: Decimal, digit: int) -> float:
@@ -22,20 +22,10 @@ def MyRound(val: Decimal, digit: int) -> float:
     if digit < 0:
         raise TypeError
     bias = 10 ** (digit + 1)
-    ret = val * bias
-    if (amount := ret % 10) >= 5:
+    ret = int(val * bias)
+    amount = ret % 10
+    if (ret >= 0 and amount >= 5) or (ret < 0 and amount > 5):
         ret += 10 - amount
     else:
         ret -= amount
     return ret / bias
-
-
-def main():
-    getcontext().prec = 3  # 有効桁数の指定
-    # print(0.81 + 0.04)  # 0.8500000000000001
-    # print(Decimal(0.81) + Decimal(0.04))  # 0.850
-    print(MyRound(Decimal(0.81) + Decimal(0.04), 1))  # 0.9
-
-
-if __name__ == "__main__":
-    main()
